@@ -1,7 +1,7 @@
 #!/usr/bin/env make
 # -*- coding: utf-8 -*-
 
-OUTPUT_EGG=procamora_mac_vendor_lookup/
+OUTPUT_EGG=procamora_mac_vendor_lookup.egg-info/
 OUTPUT_DIST=dist/
 OUTPUT_MANIFEST=MANIFEST
 

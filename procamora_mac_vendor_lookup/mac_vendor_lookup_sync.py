@@ -12,7 +12,7 @@ from typing import Text, NoReturn, Dict, AnyStr
 import requests
 from procamora_logging.logger import get_logging
 
-logger: logging = get_logging(True, 'mac_lockup')
+logger: logging = get_logging(False, 'mac_lockup')
 
 OUI_URL: Text = "http://standards-oui.ieee.org/oui.txt"
 

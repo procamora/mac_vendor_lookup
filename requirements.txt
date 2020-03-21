@@ -1,3 +1,4 @@
 requests 
 aiofiles
 aiohttp
+procamora_logging
