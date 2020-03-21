@@ -1,9 +1,12 @@
 import asyncio
-import os
 import logging
+import os
 
 import aiofiles
 import aiohttp
+from procamora_logging.logger import get_logging
+
+logger: logging = get_logging(False, 'mac_lockup')
 
 OUI_URL = "http://standards-oui.ieee.org/oui.txt"
 
@@ -21,9 +24,9 @@ class BaseMacLookup(object):
         try:
             int(mac, 16)
         except ValueError:
-            raise InvalidMacError("{} contains unexpected character".format(_mac))
+            raise InvalidMacError(f"{_mac} contains unexpected character")
         if len(mac) > 12:
-            raise InvalidMacError("{} is not a valid MAC address (too long)".format(_mac))
+            raise InvalidMacError(f"{_mac} is not a valid MAC address (too long)")
         return mac
 
 
@@ -32,12 +35,14 @@ class AsyncMacLookup(BaseMacLookup):
         self.prefixes = None
 
     async def update_vendors(self, url=OUI_URL):
-        logging.log(logging.INFO, "Downloading MAC vendor list")
+        logger.debug("Downloading MAC vendor list")
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
                 async with aiofiles.open(AsyncMacLookup.cache_path, mode='wb') as f:
                     while True:
-                        line = await response.content.readline()
+                        line: bytes = await response.content.readline()
+                        print(len(line))
+                        print(type(line))
                         if not line:
                             break
                         if b"(base 16)" in line:
@@ -54,14 +59,14 @@ class AsyncMacLookup(BaseMacLookup):
                 pass
             await self.update_vendors()
         else:
-            logging.log(logging.INFO, "Loading vendor list from cache")
+            logger.debug("Loading vendor list from cache")
             async with aiofiles.open(AsyncMacLookup.cache_path, mode='rb') as f:
                 # Loading the entire file into memory, then splitting is
                 # actually faster than streaming each line. (> 1000x)
                 for l in (await f.read()).splitlines():
                     prefix, vendor = l.split(b":", 1)
                     self.prefixes[prefix] = vendor
-        logging.log(logging.INFO, "Vendor list successfully loaded: {} entries".format(len(self.prefixes)))
+        logger.debug(f"Vendor list successfully loaded: {len(self.prefixes)} entries")
 
     async def lookup(self, mac):
         mac = self.sanitise(mac)
@@ -92,14 +97,14 @@ def main():
 
     loop = asyncio.get_event_loop()
     if len(sys.argv) < 2:
-        print("Usage: {} [MAC-Address]".format(sys.argv[0]))
+        logger.info(f"Usage: {sys.argv[0]} [MAC-Address]")
         sys.exit()
     try:
-        print(loop.run_until_complete(AsyncMacLookup().lookup(sys.argv[1])))
+        logger.info(loop.run_until_complete(AsyncMacLookup().lookup(sys.argv[1])))
     except KeyError:
-        print("Prefix is not registered")
+        logger.error("Prefix is not registered")
     except InvalidMacError as e:
-        print("Invalid MAC address:", e)
+        logger.error("Invalid MAC address:", e)
 
 
 if __name__ == "__main__":
