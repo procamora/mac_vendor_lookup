@@ -9,7 +9,7 @@ from setuptools import setup
 this_directory = Path(__file__).parent.resolve()
 long_description = Path(this_directory, 'README.md').read_text()
 
-version = '1.0'
+version = '1.1'
 
 setup(
     name='procamora-mac-vendor-lookup',  # How you named your package folder (MyLib)

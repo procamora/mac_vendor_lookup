@@ -11,12 +11,24 @@ for old-school usage.
 
 ## Installation
 
-    pip install mac-vendor-lookup
+
+```bash
+pip install procamora-mac-vendor-lookup --user
+```
+
+You can also update the library with:
+
+
+
+```bash
+python3 -m pip install --user --upgrade procamora-mac-vendor-lookup
+```
+
 
 ## Basic Usage
 
 ```python
-from mac_vendor_lookup_sync import MacLookup
+from procamora_mac_vendor_lookup.mac_vendor_lookup_async import MacLookup
 
 print(MacLookup().lookup("00:80:41:12:FE"))
 ```
@@ -34,7 +46,8 @@ query is not desired, the list can also be loaded when the program is started:
 ### synchronous
 
 ```python
-from mac_vendor_lookup_sync import MacLookup
+from procamora_mac_vendor_lookup.mac_vendor_lookup_sync import MacLookup
+
 
 mac = MacLookup()
 mac.load_vendors()  # <- This can take a few seconds for the first download
@@ -47,8 +60,7 @@ def find_mac(mac_address):
 ### asynchronous
 
 ```python
-from mac_vendor_lookup_async import MacLookup
-
+from procamora_mac_vendor_lookup.mac_vendor_lookup_async import MacLookup
 mac = MacLookup()
 mac.load_vendors()  # <- This can take a few seconds for the first download
     
@@ -64,7 +76,7 @@ There is also an asynchronous interface available:
 
 
 ```python
-from mac_vendor_lookup_sync import SyncMacLookup
+from procamora_mac_vendor_lookup.mac_vendor_lookup_sync import SyncMacLookup
 
 async def main():
     mac = SyncMacLookup()
@@ -75,7 +87,7 @@ async def main():
 
 
 ```python
-from mac_vendor_lookup_async import AsyncMacLookup
+from procamora_mac_vendor_lookup.mac_vendor_lookup_async import AsyncMacLookup
 
 async def main():
     mac = AsyncMacLookup()
