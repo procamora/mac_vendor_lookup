@@ -16,7 +16,8 @@ setup(
     packages=['procamora_mac_vendor_lookup'],  # Chose the same as "name"
     version=version,  # Start with a small number and increase it with every change you make
     license='apache-2.0',  # Chose a license from here: https://help.github.com/articles/licensing-a-repository
-    description='This Python library provides an easy way to get vendor information from a MAC address',  # Give a short description about your library
+    description='This Python library provides an easy way to get vendor information from a MAC address',
+    # Give a short description about your library
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='procamora',  # Type in your name
