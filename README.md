@@ -1,4 +1,4 @@
-Mac Vendor Lookup
+Mac Vendor Lookup (synchronous)
 =================
 
 This library provides an easy way to get vendor information from a MAC address. It downloads a local copy of the IEEE's
